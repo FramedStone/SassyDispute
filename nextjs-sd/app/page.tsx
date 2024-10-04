@@ -1,8 +1,8 @@
 "use client";
 
-// import ContactUs from "@/components/pages/ContactUs";
+import ContactUs from "@/components/pages/ContactUs";
 // import Pricing from "@/components/pages/Pricing";
-// import Projects from "@/components/pages/Projects";
+import Projects from "@/components/pages/Projects";
 import Services from "@/components/pages/Services";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -76,7 +76,7 @@ export default function Home() {
         animate={projectsControls}
         variants={revealVariants}
       >
-        {/* <Projects /> */}
+        <Projects />
       </motion.div>
 
       <motion.div
@@ -94,7 +94,7 @@ export default function Home() {
         animate={contactControls}
         variants={revealVariants}
       >
-        {/* <ContactUs /> */}
+        <ContactUs />
       </motion.div>
     </div>
   );
