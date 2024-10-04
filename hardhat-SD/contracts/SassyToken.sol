@@ -16,6 +16,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
     + Burnable
     + Mintable
     + Ownable
+    + Permit
 
     future plan
     * Flash Mint
