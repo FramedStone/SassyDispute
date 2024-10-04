@@ -3,7 +3,7 @@
 // import ContactUs from "@/components/pages/ContactUs";
 // import Pricing from "@/components/pages/Pricing";
 // import Projects from "@/components/pages/Projects";
-// import Services from "@/components/pages/Services";
+import Services from "@/components/pages/Services";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
@@ -67,7 +67,7 @@ export default function Home() {
         animate={servicesControls}
         variants={revealVariants}
       >
-        {/* <Services /> */}
+        <Services />
       </motion.div>
 
       <motion.div
