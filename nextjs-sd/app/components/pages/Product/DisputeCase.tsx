@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Filter, ArrowRight } from "lucide-react";
-
 import { useRouter } from "next/navigation";
 import TopHeader from "../TopHeader";
 import { Switch } from "@radix-ui/react-switch";
@@ -16,6 +15,7 @@ import {
   CardDescription,
   CardFooter,
 } from "../../ui";
+import disputeCasesData from "../../../../public/disputeCases-example/exampleCases.json";
 
 interface DisputeCase {
   id: string;
@@ -30,93 +30,27 @@ interface DisputeCase {
 interface Comment {
   id: string;
   creator: string;
-  role: "buyer" | "seller";
+  role: string;
   comment: string;
   created_at: string;
 }
 
-const disputeCases: DisputeCase[] = [
-  {
-    id: "1",
-    title: "Dispute over Product XYZ",
-    description:
-      "Buyer claims the product received is defective, while the seller asserts that the product was shipped in perfect condition.",
-    creator: "john doe",
-    is_archived: false,
-    created_at: "09:08:06",
-    comments: [
-      {
-        id: "1",
-        creator: "Tharshen",
-        role: "buyer",
-        comment:
-          "The product I received is completely broken, and it doesn't work at all.",
-        created_at: "09:08:06",
-      },
-      {
-        id: "2",
-        creator: "john doe",
-        role: "seller",
-        comment:
-          "I shipped the product in perfect condition. You must have damaged it after receiving it.",
-        created_at: "09:10:00",
-      },
-      {
-        id: "3",
-        creator: "Tharshen",
-        role: "buyer",
-        comment:
-          "That's not true! It was broken right out of the box. I need a refund or a replacement.",
-        created_at: "09:12:30",
-      },
-      {
-        id: "4",
-        creator: "john doe",
-        role: "seller",
-        comment:
-          "Sorry, but I have proof from the courier that the package was intact when it was delivered.",
-        created_at: "09:14:45",
-      },
-      {
-        id: "5",
-        creator: "Tharshen",
-        role: "buyer",
-        comment:
-          "That doesn't mean the product wasn't defective when you sent it. I can send photos of the damage.",
-        created_at: "09:16:00",
-      },
-      {
-        id: "6",
-        creator: "john doe",
-        role: "seller",
-        comment: "Please send the photos, and I will assess the situation.",
-        created_at: "09:18:20",
-      },
-      {
-        id: "7",
-        creator: "Tharshen",
-        role: "buyer",
-        comment: "Photos sent. Check your messages. (img) (img)",
-        created_at: "09:20:00",
-      },
-      {
-        id: "8",
-        creator: "john doe",
-        role: "seller",
-        comment:
-          "What are you talking about? That looks like it was deliberately damage. Also, how come only your shipping has issues when many of customers never had any???",
-        created_at: "09:22:10",
-      },
-    ],
-  },
-];
+// Ensure the imported data matches the DisputeCase[] type
+const importedDisputeCases: DisputeCase[] = Array.isArray(disputeCasesData)
+  ? disputeCasesData
+  : [disputeCasesData];
 
 export default function Component() {
   const router = useRouter();
 
+  const [disputeCases, setDisputeCases] = useState<DisputeCase[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<"latest" | "trending">("latest");
   const [showArchived, setShowArchived] = useState(false);
+
+  useEffect(() => {
+    setDisputeCases(importedDisputeCases);
+  }, []);
 
   const filteredCases = disputeCases.filter(
     (disputeCase) =>
@@ -133,8 +67,6 @@ export default function Component() {
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       );
     } else {
-      // Since 'trending' is not a property in the new DisputeCase interface,
-      // we'll use the number of comments as a proxy for 'trending'
       return b.comments.length - a.comments.length;
     }
   });
