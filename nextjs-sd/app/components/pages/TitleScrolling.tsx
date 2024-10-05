@@ -31,7 +31,10 @@ export default function TitleAutoscrolling() {
         {Array(14)
           .fill("/logo-no-background.png")
           .map((logo, index) => (
-            <div key={index} className="inline-block mx-4 w-24 h-24 relative">
+            <div
+              key={index}
+              className="inline-block mx-4 w-24 h-24 relative transition-transform duration-300 transform hover:scale-150"
+            >
               <Image
                 src={logo}
                 alt="Logo"
@@ -46,7 +49,10 @@ export default function TitleAutoscrolling() {
         {Array(14)
           .fill("/logo-no-background.png")
           .map((logo, index) => (
-            <div key={index} className="inline-block mx-4 w-24 h-24 relative">
+            <div
+              key={index}
+              className="inline-block mx-4 w-24 h-24 relative transition-transform duration-300 transform hover:scale-150"
+            >
               <Image
                 src={logo}
                 alt="Logo"
