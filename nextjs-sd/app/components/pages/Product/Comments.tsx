@@ -6,6 +6,9 @@ import { Avatar, Button, Textarea } from "../../../components/ui";
 import { ethers } from "ethers";
 import SassyToken_abi from "@/public/contracts-abi/sassytoken.json";
 import { useParams } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const ReactConfetti = dynamic(() => import("react-confetti"), { ssr: false });
 
 const alchemyUrl = process.env.NEXT_PUBLIC_ALCHEMY_API_URL;
 const provider = new ethers.JsonRpcProvider(alchemyUrl);
@@ -33,12 +36,62 @@ interface Comment {
   content: string;
 }
 
+function CongratulationsModal({
+  isOpen,
+  onClose,
+  transactionHash,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  transactionHash: string;
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        >
+          ×
+        </button>
+        <h2 className="text-2xl font-bold mb-4 text-center text-primary">
+          Congratulations!
+        </h2>
+        <p className="text-center text-gray-700 mb-4">
+          You just earned 1 SassyToken through that comment!
+        </p>
+        <p className="text-sm text-gray-600 break-words text-center">
+          Transaction Hash: <br />
+          <a
+            href={`https://sepolia.scrollscan.com/tx/${transactionHash}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:text-blue-700"
+          >
+            {transactionHash}
+          </a>
+        </p>
+        <ReactConfetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={200}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function Comments() {
   const { id: disputeCaseId } = useParams();
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
   const [ipfsUrl, setIpfsUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [showCongratulations, setShowCongratulations] = useState(false);
+  const [transactionHash, setTransactionHash] = useState("");
   const { toast } = useToast();
 
   const loadCommentsFromIPFS = useCallback(
@@ -148,6 +201,7 @@ export default function Comments() {
         );
 
         console.log("Transfer transaction hash:", tx_transfer.hash);
+        setTransactionHash(tx_transfer.hash);
         const receipt = await tx_transfer.wait();
         console.log("Transfer transaction receipt:", receipt);
 
@@ -161,6 +215,9 @@ export default function Comments() {
           title: "Token transferred",
           description: "Tokens have been transferred successfully.",
         });
+
+        // Show congratulations modal
+        setShowCongratulations(true);
       } catch (err: unknown) {
         console.error("Detailed error:", err);
         toast({
@@ -219,6 +276,11 @@ export default function Comments() {
           </div>
         </section>
       </div>
+      <CongratulationsModal
+        isOpen={showCongratulations}
+        onClose={() => setShowCongratulations(false)}
+        transactionHash={transactionHash}
+      />
     </div>
   );
 }
