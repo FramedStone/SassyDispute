@@ -1,7 +1,7 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Avatar, Button, Textarea } from "../../../components/ui";
 import { ethers } from "ethers";
 import SassyToken_abi from "@/public/contracts-abi/sassytoken.json";
@@ -41,34 +41,37 @@ export default function Comments() {
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
 
+  const loadCommentsFromIPFS = useCallback(
+    async (url: string) => {
+      try {
+        setUploading(true);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch comments from IPFS");
+        }
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        console.error("Error loading comments from IPFS:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load comments. Please try again later.",
+          variant: "destructive",
+        });
+      } finally {
+        setUploading(false);
+      }
+    },
+    [toast]
+  );
+
   useEffect(() => {
     const savedIpfsUrl = localStorage.getItem(`comments_${disputeCaseId}`);
     if (savedIpfsUrl) {
       setIpfsUrl(savedIpfsUrl);
       loadCommentsFromIPFS(savedIpfsUrl);
     }
-  }, [disputeCaseId]);
-
-  const loadCommentsFromIPFS = async (url: string) => {
-    try {
-      setUploading(true);
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Failed to fetch comments from IPFS");
-      }
-      const data = await response.json();
-      setComments(data);
-      setUploading(false);
-    } catch (error) {
-      console.error("Error loading comments from IPFS:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load comments. Please try again later.",
-        variant: "destructive",
-      });
-      setUploading(false);
-    }
-  };
+  }, [disputeCaseId, loadCommentsFromIPFS]);
 
   const uploadToIPFS = async (content: any) => {
     try {
@@ -92,12 +95,12 @@ export default function Comments() {
       const newIpfsUrl = await uploadRequest.json();
       setIpfsUrl(newIpfsUrl);
       localStorage.setItem(`comments_${disputeCaseId}`, newIpfsUrl);
-      setUploading(false);
       return newIpfsUrl;
     } catch (error) {
       console.error("Error uploading to IPFS:", error);
-      setUploading(false);
       throw error;
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -137,13 +140,6 @@ export default function Comments() {
 
         const value = ethers.parseEther("1");
 
-        // const balance = await contract_token.balanceOf(ownerSigner.address);
-        // console.log("Balance before transfer:", balance.toString());
-
-        // if (balance < value) {
-        //   throw new Error("Insufficient balance for transfer");
-        // }
-
         console.log("Attempting transfer...");
         const tx_transfer = await contract_token.transfer(
           recipientAddress,
@@ -160,9 +156,6 @@ export default function Comments() {
         }
 
         console.log("Transfer transaction completed successfully");
-
-        // const newBalance = await contract_token.balanceOf(ownerSigner.address);
-        // console.log("Balance after transfer:", newBalance.toString());
 
         toast({
           title: "Token transferred",
