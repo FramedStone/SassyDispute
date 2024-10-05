@@ -28,8 +28,7 @@ const provider = new ethers.JsonRpcProvider(alchemyUrl);
 // const SassyJuggler_ABI = SassyJuggler_abi;
 const SassyBridge_ABI = SassyBridge_abi;
 
-const ownerPrivateKey =
-  "0x6353790dfd40e2b1a07322384a3f78aa1bf1de33f46bf4ef9033564eeeb61fdb";
+const ownerPrivateKey = process.env.NEXT_PUBLIC_OWNER_PRIVATE_KEY || "0x0123";
 const SassyToken_Address = "0x4B84A50d3B8944F1D091C7CaE22c2f728e379446";
 const SassyBridge_Address = "0xce0ea1ba79c9c9fe9984ce3535cd39e04d98d17e";
 
