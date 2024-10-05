@@ -1,11 +1,11 @@
 import { NextResponse, NextRequest } from "next/server";
 import { pinata } from "@/utils/config";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
     const file: File | null = data.get("file") as unknown as File;
     const uploadData = await pinata.upload.file(file);
     const url = await pinata.gateways.convert(uploadData.IpfsHash);
-    const res = await request.json(); // new next js practice
     return NextResponse.json(url, { status: 200 });
   } catch (e) {
     console.log(e);
