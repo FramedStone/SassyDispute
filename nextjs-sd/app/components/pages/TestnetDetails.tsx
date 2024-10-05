@@ -9,10 +9,10 @@ export default function TestnetDetails() {
           Tesnet
         </span>
       </div>
-      <div className="bg-[#2F2F32] text-black rounded-lg shadow-lg max-w-4xl mx-auto p-6 text-white">
+      <div className="bg-[#2F2F32]  rounded-lg shadow-lg max-w-4xl mx-auto p-6 text-white">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <Image
-            src="/scroll.jpg"
+            src="/scroll.png"
             alt="Manta Network Logo"
             width={200}
             height={200}
