@@ -13,6 +13,9 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui";
+// import { useRouter } from "next/navigation";
+
+// const router = useRouter();
 
 interface DisputeCase {
   id: string;
@@ -125,7 +128,7 @@ export default function Component() {
                 <span className="text-sm text-gray-400">
                   Created At: {disputeCase.createdAt}
                 </span>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" onClick={() => {}}>
                   Details <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardFooter>
