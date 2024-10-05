@@ -24,7 +24,7 @@ const Testing = () => {
     setWalletAddress(address);
     console.log("Connected with", walletType, "Wallet:", address);
 
-    // Store the wallet address and connection status in localStorage
+    // Store the wallet address, connection status and smart contract's abi(s) in localStorage
     localStorage.setItem("walletAddress", address);
     localStorage.setItem("isConnected", "true");
   };

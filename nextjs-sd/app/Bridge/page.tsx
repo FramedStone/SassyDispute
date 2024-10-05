@@ -5,6 +5,10 @@ import { Button } from "../components/ui";
 import { Input } from "../components/ui";
 import { Label } from "../components/ui";
 
+// import SassyToken_abi from "../../public/contracts-abi/sassytoken.json";
+// import SassyJuggler_abi from "../../public/contracts-abi/sassyjuggler.json";
+import SassyBridge_abi from "../../public/contracts-abi/sassybridge.json";
+
 import {
   Dialog,
   DialogContent,
@@ -13,13 +17,98 @@ import {
   DialogFooter,
 } from "../components/ui";
 
+require("dotenv").config();
+const { ethers } = require("ethers");
+const alchemyUrl = process.env.ALCHEMY_API_URL;
+const provider = new ethers.JsonRpcProvider(alchemyUrl);
+
+// const SassyToken_ABI = SassyToken_abi;
+// const SassyJuggler_ABI = SassyJuggler_abi;
+const SassyBridge_ABI = SassyBridge_abi;
+
+const ownerPrivateKey = process.env.OWNER_PRIVATE_KEY;
+const SassyToken_Address = process.env.SASSY_TOKEN_ADDRESS;
+const SassyBridge_Address = process.env.SASSY_BRIDGE_ADDRESS;
+
+async function getSigner() {
+  if (!window.ethereum) {
+    console.error("MetaMask not installed");
+    return;
+  }
+
+  // Request access to MetaMask accounts
+  await window.ethereum.request({ method: "eth_requestAccounts" });
+
+  // Create a signer from the connected wallet (MetaMask)
+  const web3Provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await web3Provider.getSigner();
+
+  return signer;
+}
+
+async function startBridge(_disputeCasesAgreed: number, _holdDuration: number) {
+  try {
+    const signer = await getSigner();
+    if (!signer) {
+      console.error("No signer available");
+      return;
+    }
+
+    // Create a contract instance with the signer
+    const contract_bridge = new ethers.Contract(
+      process.env.SASSY_BRIDGE_ADDRESS,
+      SassyBridge_ABI,
+      signer
+    );
+
+    // Example: Sending a transaction (write function)
+    const ownerSigner = new ethers.Wallet(ownerPrivateKey, provider);
+    const contract_bridge_owner = new ethers.Contract(
+      process.env.SASSY_BRIDGE_ADDRESS,
+      SassyBridge_ABI,
+      ownerSigner
+    );
+
+    // grant partner role
+    const tx_grantRolePartner = await contract_bridge_owner.grantRole(
+      ethers.id("PARTNER"),
+      signer.address
+    );
+    console.log(
+      "granted ",
+      signer.address,
+      " role: PARTNER - ",
+      tx_grantRolePartner
+    );
+
+    // setBridge()
+    const tx_setBridge = await contract_bridge.setBridge(
+      ownerSigner.address,
+      signer.address,
+      _disputeCasesAgreed,
+      SassyToken_Address,
+      BigInt(0),
+      _holdDuration
+    );
+
+    console.log(
+      "set_bridge() called by: ",
+      signer.address,
+      " - ",
+      tx_setBridge
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export default function ValueSubmission() {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
   // This would typically come from an environment variable or API call
-  const contractAddress = "0x1234567890123456789012345678901234567890";
+  const contractAddress = SassyBridge_Address;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +119,9 @@ export default function ValueSubmission() {
       setError("Please enter a number greater than 0.");
       return;
     }
+
+    // setBridge()
+    startBridge(10, 10);
 
     setShowPopup(true);
   };
@@ -67,9 +159,14 @@ export default function ValueSubmission() {
               <p className="text-sm text-zinc-400 mb-2">
                 The smart contract address is:
               </p>
-              <p className="font-mono bg-zinc-700 p-3 rounded-md break-all">
+              <a
+                href={`https://sepolia.scrollscan.com/address/${contractAddress}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono bg-zinc-700 p-3 rounded-md break-all inline-block hover:bg-zinc-600 transition-colors"
+              >
                 {contractAddress}
-              </p>
+              </a>
             </div>
             <DialogFooter>
               <Button
