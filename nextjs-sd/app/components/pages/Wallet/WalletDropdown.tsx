@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/app/components/ui/Button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/Dropdown-menu";
+} from "@/app/components/ui/Dropdown-menu";
 import { ChevronDown, ChevronUp, Wallet } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";

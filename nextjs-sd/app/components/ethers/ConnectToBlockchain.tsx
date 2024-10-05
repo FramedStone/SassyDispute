@@ -2,7 +2,7 @@
 
 import { ethers } from "ethers";
 import EthereumProvider from "@walletconnect/ethereum-provider";
-import { Button } from "@/components/ui";
+import { Button } from "@/app/components/ui";
 
 interface ConnectToBlockchainProps {
   onWalletConnect: (address: string, walletType: string) => void;

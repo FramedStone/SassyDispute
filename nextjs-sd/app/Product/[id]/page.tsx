@@ -1,6 +1,6 @@
 "use client";
 
-import { Textarea, Button } from "@/components/ui";
+import { Textarea, Button } from "@/app/components/ui";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar } from "@radix-ui/react-avatar";
 import { useState } from "react";

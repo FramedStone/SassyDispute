@@ -1,4 +1,4 @@
-import DisputeCase from "@/components/pages/Product/DisputeCase";
+import DisputeCase from "@/app/components/pages/Product/DisputeCase";
 
 export default function Home() {
   return (

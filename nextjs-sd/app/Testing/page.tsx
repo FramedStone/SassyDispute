@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import ConnectToBlockchain from "@/components/ethers/ConnectToBlockchain";
-import WalletDropdown from "@/components/pages/Wallet/WalletDropdown";
+import ConnectToBlockchain from "@/app/components/ethers/ConnectToBlockchain";
+import WalletDropdown from "@/app/components/pages/Wallet/WalletDropdown";
 
 const Testing = () => {
   const [walletAddress, setWalletAddress] = useState<string>("");
