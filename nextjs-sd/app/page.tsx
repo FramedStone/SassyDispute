@@ -1,14 +1,16 @@
 "use client";
 
 import ContactUs from "@/components/pages/ContactUs";
-import Projects from "@/components/pages/Projects";
+// import Projects from "@/components/pages/Projects";
 import Services from "@/components/pages/Services";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import TopHeader from "@/components/pages/TopHeader";
 import Title from "@/components/pages/Title";
 import TitleScrolling from "@/components/pages/TitleScrolling";
+import TopHeader from "@/components/pages/TopHeader";
+import TestnetDetails from "@/components/pages/TestnetDetails";
+import ActionCard from "@/components/pages/ActionCard";
 
 // Define a reusable animation variant
 const revealVariants = {
@@ -53,17 +55,18 @@ export default function Home() {
 
   return (
     <div className="bg-primary min-h-screen font-karla">
-      <TopHeader />
       <motion.div
         ref={headerRef}
         initial="hidden"
         animate={headerControls}
         variants={revealVariants}
       >
+        <TopHeader />
+
         {/* <Header /> */}
 
         <Title />
-        <TitleScrolling />
+        <ActionCard />
       </motion.div>
 
       <motion.div
@@ -81,7 +84,8 @@ export default function Home() {
         animate={projectsControls}
         variants={revealVariants}
       >
-        <Projects />
+        <TestnetDetails />
+        {/* <Projects /> */}
       </motion.div>
 
       <motion.div
@@ -89,9 +93,7 @@ export default function Home() {
         initial="hidden"
         animate={pricingControls}
         variants={revealVariants}
-      >
-        {/* <Pricing /> */}
-      </motion.div>
+      ></motion.div>
 
       <motion.div
         ref={contactRef}

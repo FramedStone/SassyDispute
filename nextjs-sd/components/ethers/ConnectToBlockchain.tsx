@@ -3,6 +3,12 @@
 import { ethers } from "ethers";
 import EthereumProvider from "@walletconnect/ethereum-provider";
 import { Button } from "@/components/ui";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui";
 
 interface ConnectToBlockchainProps {
   onWalletConnect: (address: string, walletType: string) => void;
@@ -85,15 +91,22 @@ const ConnectToBlockchain: React.FC<ConnectToBlockchainProps> = ({
   }
 
   return (
-    <div className="space-x-5">
-      <Button onClick={() => connectWallet("MetaMask")}>
-        Connect MetaMask
-      </Button>
-      <Button onClick={() => connectWallet("WalletConnect")}>
-        Connect WalletConnect
-      </Button>
-      <Button onClick={() => connectWallet("Bitget")}>Connect Bitget</Button>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant={"ghost"}>Connect Wallet</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="">
+        <DropdownMenuItem onClick={() => connectWallet("MetaMask")}>
+          Connect MetaMask
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => connectWallet("WalletConnect")}>
+          Connect WalletConnect
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => connectWallet("Bitget")}>
+          Connect Bitget
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

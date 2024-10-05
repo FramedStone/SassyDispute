@@ -1,23 +1,47 @@
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+
+import WalletComponents from "./Wallet/WalletComponents";
 
 export default function TopHeader() {
+  const pathname = usePathname();
+  const router = useRouter();
+
   return (
-    <header className="flex justify-between items-center p-4 bg-primary-background text-white font-karla">
-      <div className="text-yellow-300 font-bold text-xl ">LOGO HERE</div>
+    <header className="flex justify-between items-center p-4 bg-primary text-white font-karla">
+      <div
+        className="cursor-pointer"
+        onClick={() => {
+          router.push("/");
+        }}
+      >
+        <Image
+          src={"/logo-no-background.png"}
+          width={100}
+          height={100}
+          alt="logo"
+        />
+      </div>
       <nav className="space-x-4">
-        <Link href="/" className="hover:text-yellow-300">
+        <Link
+          href="/"
+          className={`hover:text-yellow-300 ${
+            pathname === "/" ? "text-yellow-300" : ""
+          }`}
+        >
           Home
         </Link>
-        <Link href="/my-project" className="hover:text-yellow-300">
-          My Project
-        </Link>
-        <Link href="/contact" className="hover:text-yellow-300">
-          Contact
+        <Link
+          href="/Cases"
+          className={`hover:text-yellow-300 ${
+            pathname.startsWith("/Cases") ? "text-yellow-300" : ""
+          }`}
+        >
+          Cases
         </Link>
       </nav>
-      <button className="bg-yellow-300 text-gray-900 px-4 py-2 rounded-full font-semibold">
-        Dashboard
-      </button>
+      <WalletComponents />
     </header>
   );
 }
