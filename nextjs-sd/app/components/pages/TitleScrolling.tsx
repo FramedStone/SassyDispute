@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 export default function TitleAutoscrolling() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -25,22 +26,35 @@ export default function TitleAutoscrolling() {
       ref={scrollRef}
       className="overflow-hidden whitespace-nowrap border border-t-0 border-r-0 border-l-0 text-white py-2"
     >
+      {/* Scrolling logos */}
       <div className="inline-block animate-marquee">
         {Array(14)
-          .fill("LOGOHERE")
+          .fill("/logo-no-background.png")
           .map((logo, index) => (
-            <span key={index} className="mx-4">
-              {logo}
-            </span>
+            <div key={index} className="inline-block mx-4 w-24 h-24 relative">
+              <Image
+                src={logo}
+                alt="Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           ))}
       </div>
       <div className="inline-block animate-marquee">
         {Array(14)
-          .fill("LOGOHERE")
+          .fill("/logo-no-background.png")
           .map((logo, index) => (
-            <span key={index} className="mx-4">
-              {logo}
-            </span>
+            <div key={index} className="inline-block mx-4 w-24 h-24 relative">
+              <Image
+                src={logo}
+                alt="Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           ))}
       </div>
     </div>
