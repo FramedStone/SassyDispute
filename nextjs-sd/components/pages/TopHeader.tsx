@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function TopHeader() {
   return (
-    <header className="flex justify-between items-center p-4 bg-primary-background text-white">
-      <div className="text-yellow-300 font-bold text-xl">LOGO HERE</div>
+    <header className="flex justify-between items-center p-4 bg-primary-background text-white font-karla">
+      <div className="text-yellow-300 font-bold text-xl ">LOGO HERE</div>
       <nav className="space-x-4">
         <Link href="/" className="hover:text-yellow-300">
           Home
