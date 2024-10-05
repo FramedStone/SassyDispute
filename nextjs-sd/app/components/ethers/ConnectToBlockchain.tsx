@@ -9,6 +9,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui";
+import { Wallet } from "lucide-react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 interface ConnectToBlockchainProps {
   onWalletConnect: (address: string, walletType: string) => void;
@@ -17,6 +20,7 @@ interface ConnectToBlockchainProps {
 const ConnectToBlockchain: React.FC<ConnectToBlockchainProps> = ({
   onWalletConnect,
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const connectWallet = async (providerType: string) => {
     let provider;
     let walletType;
@@ -93,7 +97,21 @@ const ConnectToBlockchain: React.FC<ConnectToBlockchainProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={"ghost"}>Connect Wallet</Button>
+        <Button
+          variant="ghost"
+          className="group flex items-center space-x-2"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <motion.div
+            animate={{ rotate: isHovered ? 360 : 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center justify-center"
+          >
+            <Wallet className="h-4 w-4" />
+          </motion.div>
+          <span>Connect Wallet</span>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="">
         <DropdownMenuItem onClick={() => connectWallet("MetaMask")}>
