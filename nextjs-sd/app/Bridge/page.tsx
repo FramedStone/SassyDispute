@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Checkbox } from "@/app/components/ui";
-import { Button } from "@/app/components/ui";
+import { Checkbox } from "../components/ui";
+import { Button } from "../components/ui";
 import { useRouter } from "next/navigation";
 
 export default function TermsAndConditions() {
