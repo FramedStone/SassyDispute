@@ -22,12 +22,14 @@ export default function Title() {
   }, []);
 
   return (
-    <div className="flex-1 flex" id="home">
+    <div className="flex-1 flex font-karla" id="home">
       <div className="w-16 border border-white border-l-0 text-white flex items-center justify-center">
-        <span className="transform -rotate-90 text-xl font-semibold">Home</span>
+        <span className="transform -rotate-90 text-xl font-semibold font-karla">
+          Home
+        </span>
       </div>
-      <div className="flex-1 flex flex-col justify-center px-16 border border-white py-5 border-l-0 border-r-0">
-        <h1 className="text-6xl font-bold text-gray-300 mb-4">
+      <div className="flex-1 flex flex-col justify-center px-16 border border-white py-5 border-l-0 border-r-0 font-karla">
+        <h1 className="text-6xl font-bold text-gray-300 mb-4 font-karla">
           <span className="block">Resolve</span>
           <span className="block">with</span>
           <span className="text-yellow-300">confidence</span>

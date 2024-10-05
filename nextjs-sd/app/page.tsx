@@ -52,7 +52,7 @@ export default function Home() {
   ]);
 
   return (
-    <div className="bg-primary min-h-screen">
+    <div className="bg-primary min-h-screen font-karla">
       <TopHeader />
       <motion.div
         ref={headerRef}
@@ -61,6 +61,7 @@ export default function Home() {
         variants={revealVariants}
       >
         {/* <Header /> */}
+
         <Title />
         <TitleScrolling />
       </motion.div>
