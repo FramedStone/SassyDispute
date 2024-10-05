@@ -43,6 +43,10 @@ SassyBridge#SassyBridge
 - React
 - Framer motion
 - Tailwind CSS
+- TypeScript
+- Shadcn UI
+- emailjs
+- lucide-react
 
 ### Deployment
 - Scroll
@@ -53,7 +57,7 @@ SassyBridge#SassyBridge
 ## Contributors
 1. Lee Wei Xuan
 2. Eric Kee Ming Shen
-3. Ian Gan Jen Hao
+3. Ian Gan Jian Hao
 4. Tan Kai
 5. Tharshen A/L Surian Balan
 
