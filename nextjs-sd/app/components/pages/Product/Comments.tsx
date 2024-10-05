@@ -1,16 +1,16 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import React, { useState } from "react";
-import { Avatar, Button, Textarea } from "../../ui";
+import React, { useState, useEffect, useCallback } from "react";
+import { Avatar, Button, Textarea } from "../../../components/ui";
 import { ethers } from "ethers";
-import SassyToken_abi from "../../../../public/contracts-abi/sassytoken.json";
+import SassyToken_abi from "@/public/contracts-abi/sassytoken.json";
+import { useParams } from "next/navigation";
 
 const alchemyUrl = process.env.NEXT_PUBLIC_ALCHEMY_API_URL;
 const provider = new ethers.JsonRpcProvider(alchemyUrl);
 
 const SassyToken_ABI = SassyToken_abi;
-
 const ownerPrivateKey = process.env.NEXT_PUBLIC_OWNER_PRIVATE_KEY || "0x123";
 const SassyToken_Address = "0x4B84A50d3B8944F1D091C7CaE22c2f728e379446";
 
@@ -34,9 +34,75 @@ interface Comment {
 }
 
 export default function Comments() {
+  const { id: disputeCaseId } = useParams();
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
+  const [ipfsUrl, setIpfsUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
+
+  const loadCommentsFromIPFS = useCallback(
+    async (url: string) => {
+      try {
+        setUploading(true);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch comments from IPFS");
+        }
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        console.error("Error loading comments from IPFS:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load comments. Please try again later.",
+          variant: "destructive",
+        });
+      } finally {
+        setUploading(false);
+      }
+    },
+    [toast]
+  );
+
+  useEffect(() => {
+    const savedIpfsUrl = localStorage.getItem(`comments_${disputeCaseId}`);
+    if (savedIpfsUrl) {
+      setIpfsUrl(savedIpfsUrl);
+      loadCommentsFromIPFS(savedIpfsUrl);
+    }
+  }, [disputeCaseId, loadCommentsFromIPFS]);
+
+  const uploadToIPFS = async (content: any) => {
+    try {
+      setUploading(true);
+      const file = new File(
+        [JSON.stringify(content)],
+        `comments_${disputeCaseId}.json`,
+        {
+          type: "application/json",
+        }
+      );
+      const data = new FormData();
+      data.set("file", file);
+      const uploadRequest = await fetch("/api/files", {
+        method: "POST",
+        body: data,
+      });
+      if (!uploadRequest.ok) {
+        throw new Error("Failed to upload comments to IPFS");
+      }
+      const newIpfsUrl = await uploadRequest.json();
+      setIpfsUrl(newIpfsUrl);
+      localStorage.setItem(`comments_${disputeCaseId}`, newIpfsUrl);
+      return newIpfsUrl;
+    } catch (error) {
+      console.error("Error uploading to IPFS:", error);
+      throw error;
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,18 +112,22 @@ export default function Comments() {
         author: localStorage.getItem("walletAddress") || "Anonymous",
         content: newComment.trim(),
       };
-      setComments([newCommentObj, ...comments]);
+      const updatedComments = [newCommentObj, ...comments];
+      setComments(updatedComments);
       setNewComment("");
-      toast({
-        title: "Comment submitted",
-        description: "Your comment has been added successfully.",
-      });
 
       try {
+        // Upload updated comments to IPFS
+        const newIpfsUrl = await uploadToIPFS(updatedComments);
+        toast({
+          title: "Comment submitted",
+          description: `Your comment has been added and uploaded to IPFS.`,
+        });
+
+        // Token transfer logic
         const signer = await getSigner();
         if (!signer) {
-          console.error("No signer available");
-          return;
+          throw new Error("No signer available");
         }
 
         const recipientAddress = await signer.getAddress();
@@ -68,73 +138,29 @@ export default function Comments() {
           ownerSigner
         );
 
-        const value = ethers.parseEther("1"); // Adjust the amount as needed
+        const value = ethers.parseEther("1");
 
-        // Check balance before transfer
-        const balance = await contract_token.balanceOf(ownerSigner.address);
-        console.log("Balance before transfer:", balance.toString());
+        console.log("Attempting transfer...");
+        const tx_transfer = await contract_token.transfer(
+          recipientAddress,
+          value,
+          { gasLimit: 100000 }
+        );
 
-        if (balance < value) {
-          throw new Error("Insufficient balance for transfer");
+        console.log("Transfer transaction hash:", tx_transfer.hash);
+        const receipt = await tx_transfer.wait();
+        console.log("Transfer transaction receipt:", receipt);
+
+        if (receipt.status === 0) {
+          throw new Error("Transaction failed");
         }
 
-        // Call transfer function
-        try {
-          console.log("Attempting transfer...");
-          const tx_transfer = await contract_token.transfer(
-            recipientAddress,
-            value,
-            { gasLimit: 100000 } // Set a fixed gas limit
-          );
+        console.log("Transfer transaction completed successfully");
 
-          console.log("Transfer transaction hash:", tx_transfer.hash);
-          const receipt = await tx_transfer.wait();
-          console.log("Transfer transaction receipt:", receipt);
-
-          if (receipt.status === 0) {
-            throw new Error("Transaction failed");
-          }
-
-          console.log("Transfer transaction completed successfully");
-
-          // Check balance after transfer
-          const newBalance = await contract_token.balanceOf(
-            ownerSigner.address
-          );
-          console.log("Balance after transfer:", newBalance.toString());
-
-          toast({
-            title: "Token transferred",
-            description: "Tokens have been transferred successfully.",
-          });
-        } catch (error: unknown) {
-          console.error("Transfer error:", error);
-
-          if (error instanceof Error) {
-            console.log("Error message:", error.message);
-            if ("code" in error) {
-              console.log("Error code:", (error as { code: string }).code);
-            }
-            if ("transaction" in error) {
-              console.log(
-                "Failed transaction details:",
-                (error as { transaction: unknown }).transaction
-              );
-            }
-            if ("receipt" in error) {
-              console.log(
-                "Failed transaction receipt:",
-                (error as { receipt: unknown }).receipt
-              );
-            }
-          }
-
-          throw new Error(
-            `Transfer failed: ${
-              error instanceof Error ? error.message : "Unknown error"
-            }`
-          );
-        }
+        toast({
+          title: "Token transferred",
+          description: "Tokens have been transferred successfully.",
+        });
       } catch (err: unknown) {
         console.error("Detailed error:", err);
         toast({
@@ -156,7 +182,9 @@ export default function Comments() {
       </div>
       <div className="flex-1 flex flex-col p-6">
         <section className="bg-primary p-6 rounded-lg">
-          <h2 className="text-xl font-bold mb-4">Comments</h2>
+          <h2 className="text-xl font-bold mb-4">
+            Comments for Case {disputeCaseId}
+          </h2>
           <form onSubmit={handleSubmitComment} className="mb-6">
             <Textarea
               placeholder="Drop Your Opinion Here"
@@ -166,9 +194,14 @@ export default function Comments() {
               rows={4}
             />
             <div className="flex justify-end">
-              <Button type="submit" variant="ghost" className="text-black">
-                Submit
-                <span className="ml-2">→</span>
+              <Button
+                type="submit"
+                variant="ghost"
+                className="text-black"
+                disabled={uploading}
+              >
+                {uploading ? "Uploading..." : "Submit"}
+                {!uploading && <span className="ml-2">→</span>}
               </Button>
             </div>
           </form>
