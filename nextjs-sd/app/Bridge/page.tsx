@@ -1,89 +1,86 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
-import { Checkbox } from "../components/ui";
 import { Button } from "../components/ui";
-import { useRouter } from "next/navigation";
+import { Input } from "../components/ui";
+import { Label } from "../components/ui";
 
-export default function TermsAndConditions() {
-  const [isChecked, setIsChecked] = useState(false);
-  const router = useRouter();
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "../components/ui";
 
-  const handleProceed = () => {
-    if (isChecked) {
-      // Proceed to the next page
-      router.push("/next-page"); // Replace with your actual next page route
-    } else {
-      alert("Please accept the terms and conditions to proceed.");
+export default function ValueSubmission() {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+
+  // This would typically come from an environment variable or API call
+  const contractAddress = "0x1234567890123456789012345678901234567890";
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    const numValue = parseFloat(value);
+    if (isNaN(numValue) || numValue <= 0) {
+      setError("Please enter a number greater than 0.");
+      return;
     }
+
+    setShowPopup(true);
   };
 
   return (
     <div className="min-h-screen bg-zinc-900 text-white p-8">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Terms & Conditions</h1>
-
-        <ol className="list-decimal space-y-8 ml-6">
-          <li>
-            <p className="mb-4">
-              When exporting the data of the dispute cases, it must follow the
-              json schema shown below. This is to standardize the data that we
-              receive from all our providers regarding to the disputate cases.
-            </p>
-            <Image
-              src="/placeholder.svg"
-              alt="JSON Schema"
-              width={600}
-              height={200}
-              className="bg-zinc-700 w-full h-40 object-cover"
+      <div className="max-w-md mx-auto">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="value">Enter Value</Label>
+            <Input
+              id="value"
+              type="number"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Enter a number greater than 0"
+              className="bg-zinc-800 border-zinc-700 text-white"
             />
-          </li>
-
-          <li>
-            <p className="mb-4">
-              To understand our exchange rate for our Sassytokens, please refer
-              to the guideline below.
-            </p>
-            <Image
-              src="/placeholder.svg"
-              alt="Exchange Rate Guideline"
-              width={600}
-              height={200}
-              className="bg-zinc-700 w-full h-40 object-cover"
-            />
-          </li>
-
-          <li>
-            <p>
-              Once you have decided to bridge, you must have the dispute cases
-              ready to be exported from your smart contract to ours.
-            </p>
-          </li>
-        </ol>
-
-        <div className="flex items-center space-x-2 mt-8">
-          <Checkbox
-            id="terms"
-            checked={isChecked}
-            onCheckedChange={(checked) => setIsChecked(checked as boolean)}
-            className="border-zinc-500 text-zinc-500 focus:ring-zinc-500 data-[state=checked]:bg-zinc-500 data-[state=checked]:text-white"
-          />
-          <label
-            htmlFor="terms"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+          </div>
+          <Button
+            type="submit"
+            className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
           >
-            I accept to the terms & conditions of this agreement.
-          </label>
-        </div>
+            Submit
+          </Button>
+        </form>
 
-        <Button
-          className="w-full mt-8 bg-yellow-400 text-black hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed"
-          onClick={handleProceed}
-          disabled={!isChecked}
-        >
-          Next
-        </Button>
+        <Dialog open={showPopup} onOpenChange={setShowPopup}>
+          <DialogContent className="bg-zinc-800 text-white">
+            <DialogHeader>
+              <DialogTitle>Smart Contract Address</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <p className="text-sm text-zinc-400 mb-2">
+                The smart contract address is:
+              </p>
+              <p className="font-mono bg-zinc-700 p-3 rounded-md break-all">
+                {contractAddress}
+              </p>
+            </div>
+            <DialogFooter>
+              <Button
+                onClick={() => setShowPopup(false)}
+                className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
+              >
+                Close
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
