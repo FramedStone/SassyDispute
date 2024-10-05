@@ -24,7 +24,7 @@ SassyJuggler#SassyJuggler
 
 SassyToken#SassyToken 
 - <b>Address:</b> 0x4B84A50d3B8944F1D091C7CaE22c2f728e379446
-- <b>Link:</b> https://sepolia.scrollscan.com/address/0xb05b5AE07921A856ED06D6Ad5e23434bE912DC47#events
+- <b>Link:</b> https://sepolia.scrollscan.com/address/0x4B84A50d3B8944F1D091C7CaE22c2f728e379446
 
 SassyBridge#SassyBridge 
 - <b>Address:</b> 0xcE0ea1Ba79c9c9fE9984cE3535cd39E04D98d17E
