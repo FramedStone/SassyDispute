@@ -39,6 +39,14 @@ export default function TopHeader() {
         >
           Cases
         </Link>
+        <Link
+          href="/Terms"
+          className={`hover:text-yellow-300 ${
+            pathname.startsWith("/Terms") ? "text-yellow-300" : ""
+          }`}
+        >
+          Terms
+        </Link>
       </nav>
       <WalletComponents />
     </header>
