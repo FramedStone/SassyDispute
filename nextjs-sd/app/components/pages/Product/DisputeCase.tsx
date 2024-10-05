@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Search, Filter, ArrowRight } from "lucide-react";
-import { Input } from "@/components/ui/";
-import { Button } from "@/components/ui/";
-import { Switch } from "@/components/ui/";
+import { Input } from "@/app/components/ui";
+import { Button } from "@/app/components/ui";
+import { Switch } from "@/app/components/ui";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
   CardTitle,
   CardDescription,
   CardFooter,
-} from "@/components/ui";
+} from "@/app/components/ui";
 // import { useRouter } from "next/navigation";
 
 // const router = useRouter();

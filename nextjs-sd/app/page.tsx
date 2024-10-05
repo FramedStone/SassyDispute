@@ -1,14 +1,14 @@
 "use client";
 
-import ContactUs from "@/components/pages/ContactUs";
-import Projects from "@/components/pages/Projects";
-import Services from "@/components/pages/Services";
+import ContactUs from "@/app/components/pages/ContactUs";
+import Projects from "@/app/components/pages/Projects";
+import Services from "@/app/components/pages/Services";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import TopHeader from "@/components/pages/TopHeader";
-import Title from "@/components/pages/Title";
-import TitleScrolling from "@/components/pages/TitleScrolling";
+import TopHeader from "@/app/components/pages/TopHeader";
+import Title from "@/app/components/pages/Title";
+import TitleScrolling from "@/app/components/pages/TitleScrolling";
 
 // Define a reusable animation variant
 const revealVariants = {
