@@ -1,17 +1,17 @@
 "use client";
 
-import { Button } from "@/app/components/ui/Button";
+import { ChevronDown, ChevronUp, Wallet } from "lucide-react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/app/components/ui/Dropdown-menu";
-import { ChevronDown, ChevronUp, Wallet } from "lucide-react";
-import { motion } from "framer-motion";
-import { useState } from "react";
+} from "../../ui";
 
 interface WalletDropdownProps {
   walletAddress: string;

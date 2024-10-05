@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import ConnectToBlockchain from "@/app/components/ethers/ConnectToBlockchain";
-import WalletDropdown from "@/app/components/pages/Wallet/WalletDropdown";
+import ConnectToBlockchain from "../../ethers/ConnectToBlockchain";
+import WalletDropdown from "./WalletDropdown";
 
 const Testing = () => {
   const [walletAddress, setWalletAddress] = useState<string>("");
@@ -40,7 +40,6 @@ const Testing = () => {
 
   return (
     <div>
-      <h1>Test ConnectToBlockchain Component</h1>
       {!isConnected ? (
         <ConnectToBlockchain onWalletConnect={handleWalletConnect} />
       ) : (

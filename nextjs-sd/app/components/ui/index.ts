@@ -5,7 +5,7 @@ export * from "./Avatar";
 export * from "./Badge";
 export * from "./Breadcrumb";
 export * from "./Button";
-export * from "./card";
+export * from "./Card";
 export * from "./Carousel";
 export * from "./Checkbox";
 export * from "./Table";

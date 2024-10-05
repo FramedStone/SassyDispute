@@ -1,37 +1,33 @@
 "use client";
 
-import ContactUs from "@/app/components/pages/ContactUs";
-import Projects from "@/app/components/pages/Projects";
-import Services from "@/app/components/pages/Services";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import TopHeader from "@/app/components/pages/TopHeader";
-import Title from "@/app/components/pages/Title";
-import TitleScrolling from "@/app/components/pages/TitleScrolling";
+import TopHeader from "./components/pages/TopHeader";
+import Title from "./components/pages/Title";
+import ActionCard from "./components/pages/ActionCard";
+import Services from "./components/pages/Services";
+import TestnetDetails from "./components/pages/TestnetDetails";
+import ContactUs from "./components/pages/ContactUs";
 
-// Define a reusable animation variant
 const revealVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
 export default function Home() {
-  // InView hooks for each section
   const [headerRef, headerInView] = useInView({ triggerOnce: true });
   const [servicesRef, servicesInView] = useInView({ triggerOnce: true });
   const [projectsRef, projectsInView] = useInView({ triggerOnce: true });
   const [pricingRef, pricingInView] = useInView({ triggerOnce: true });
   const [contactRef, contactInView] = useInView({ triggerOnce: true });
 
-  // Animation controls
   const headerControls = useAnimation();
   const servicesControls = useAnimation();
   const projectsControls = useAnimation();
   const pricingControls = useAnimation();
   const contactControls = useAnimation();
 
-  // Trigger animation based on section visibility
   useEffect(() => {
     if (headerInView) headerControls.start("visible");
     if (servicesInView) servicesControls.start("visible");
@@ -53,17 +49,18 @@ export default function Home() {
 
   return (
     <div className="bg-primary min-h-screen font-karla">
-      <TopHeader />
       <motion.div
         ref={headerRef}
         initial="hidden"
         animate={headerControls}
         variants={revealVariants}
       >
+        <TopHeader />
+
         {/* <Header /> */}
 
         <Title />
-        <TitleScrolling />
+        <ActionCard />
       </motion.div>
 
       <motion.div
@@ -81,7 +78,7 @@ export default function Home() {
         animate={projectsControls}
         variants={revealVariants}
       >
-        <Projects />
+        <TestnetDetails />
       </motion.div>
 
       <motion.div
@@ -89,9 +86,7 @@ export default function Home() {
         initial="hidden"
         animate={pricingControls}
         variants={revealVariants}
-      >
-        {/* <Pricing /> */}
-      </motion.div>
+      ></motion.div>
 
       <motion.div
         ref={contactRef}
