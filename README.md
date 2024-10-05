@@ -31,6 +31,11 @@ SassyBridge#SassyBridge
 - <b>Link:</b> https://sepolia.scrollscan.com/address/0xcE0ea1Ba79c9c9fE9984cE3535cd39E04D98d17E
 
 ## Tech Stack 
+### Blockchain Network
+- Scroll Sepolia Testnet
+
+### DataBase
+- IPFS
 
 ### Backend
 - Solidity
@@ -47,9 +52,14 @@ SassyBridge#SassyBridge
 - Shadcn UI
 - emailjs
 - lucide-react
+- react-cofetti
+
+### API
+- Pinata API
+- Alchemy Node API
 
 ### Deployment
-- Scroll
+- hardhat (with ignition module)
 
 ## Security Considerations
 - Enhanced security to prevent reentrancy attacks from happening by utilising OpenZeppelin's library
