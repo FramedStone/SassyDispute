@@ -21,16 +21,16 @@ import dotenv from "dotenv";
 import { ethers } from "ethers";
 
 dotenv.config();
-const alchemyUrl = process.env.ALCHEMY_API_URL;
+const alchemyUrl = process.env.NEXT_PUBLIC_ALCHEMY_API_URL;
 const provider = new ethers.JsonRpcProvider(alchemyUrl);
 
 // const SassyToken_ABI = SassyToken_abi;
 // const SassyJuggler_ABI = SassyJuggler_abi;
 const SassyBridge_ABI = SassyBridge_abi;
 
-const ownerPrivateKey = process.env.OWNER_PRIVATE_KEY;
-const SassyToken_Address = process.env.SASSY_TOKEN_ADDRESS;
-const SassyBridge_Address = process.env.SASSY_BRIDGE_ADDRESS;
+const ownerPrivateKey = process.env.NEXT_PUBLIC_OWNER_PRIVATE_KEY;
+const SassyToken_Address = process.env.NEXT_PUBLIC_SASSY_TOKEN_ADDRESS;
+const SassyBridge_Address = process.env.NEXT_PUBLIC_SASSY_BRIDGE_ADDRESS;
 
 async function getSigner() {
   if (!window.ethereum) {
@@ -58,7 +58,7 @@ async function startBridge(_disputeCasesAgreed: number, _holdDuration: number) {
 
     // Create a contract instance with the signer
     const contract_bridge = new ethers.Contract(
-      process.env.SASSY_BRIDGE_ADDRESS,
+      SassyBridge_Address,
       SassyBridge_ABI,
       signer
     );
@@ -66,7 +66,7 @@ async function startBridge(_disputeCasesAgreed: number, _holdDuration: number) {
     // Example: Sending a transaction (write function)
     const ownerSigner = new ethers.Wallet(ownerPrivateKey, provider);
     const contract_bridge_owner = new ethers.Contract(
-      process.env.SASSY_BRIDGE_ADDRESS,
+      SassyBridge_Address,
       SassyBridge_ABI,
       ownerSigner
     );
