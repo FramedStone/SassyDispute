@@ -12,8 +12,7 @@ export default function TermsAndConditions() {
 
   const handleProceed = () => {
     if (isChecked) {
-      // Proceed to the next page
-      router.push("/Bridge"); // Replace with your actual next page route
+      router.push("/Bridge");
     } else {
       alert("Please accept the terms and conditions to proceed.");
     }
@@ -45,13 +44,22 @@ export default function TermsAndConditions() {
               To understand our exchange rate for our Sassytokens, please refer
               to the guideline below.
             </p>
-            <Image
+            {/* <Image
               src="/placeholder.svg"
               alt="Exchange Rate Guideline"
               width={600}
               height={200}
               className="bg-zinc-700 w-full h-40 object-cover"
-            />
+            /> */}
+            <p className="mb-2">
+              1 dispute case = 0.001 SassyToken <br />
+              1000 dispute cases = 0.8 SassyToken (20% off) <br />
+              10,000 dispute cases = 5 SassyToken (50% off)
+              <br />
+              100,000 dispute cases = 35 SassyToken (65% off) more = to be
+              discussed
+              <br />
+            </p>
           </li>
 
           <li>
