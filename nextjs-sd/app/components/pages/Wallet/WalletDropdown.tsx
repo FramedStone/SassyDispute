@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui";
+import { useRouter } from "next/navigation";
 
 interface WalletDropdownProps {
   walletAddress: string;
@@ -38,6 +39,7 @@ export default function WalletDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [isDisconnecting, setIsDisconnecting] = useState(false);
   const [showMenuItems, setShowMenuItems] = useState(true);
+  const router = useRouter();
 
   const handleDisconnect = () => {
     setIsDisconnecting(true);
@@ -51,9 +53,24 @@ export default function WalletDropdown({
   };
 
   const menuItems = [
-    { label: "Home", onClick: () => {} },
-    { label: "Profile", onClick: () => {} },
-    { label: "Settings", onClick: () => {} },
+    {
+      label: "Home",
+      onClick: () => {
+        router.push("/");
+      },
+    },
+    {
+      label: "Cases",
+      onClick: () => {
+        router.push("/Cases");
+      },
+    },
+    {
+      label: "Terms",
+      onClick: () => {
+        router.push("/Terms");
+      },
+    },
     {
       label: "Disconnect Wallet",
       onClick: handleDisconnect,
@@ -64,7 +81,7 @@ export default function WalletDropdown({
   return (
     <DropdownMenu onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="ghost">
           <motion.div
             // variants={iconVariants}
             animate={isDisconnecting ? "connecting" : "idle"}
