@@ -43,6 +43,10 @@ SassyBridge#SassyBridge
 - React
 - Framer motion
 - Tailwind CSS
+- TypeScript
+- Shadcn UI
+- emailjs
+- lucide-react
 
 ### Deployment
 - Scroll
