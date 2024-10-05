@@ -1,176 +1,53 @@
-"use client";
+import Image from "next/image";
+import Link from "next/link";
 
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import StripedBackground from "./StripedBackground ";
-
-// Example projects array (You can replace this with your actual data)
-const projects = [
-  {
-    title: "Redesign Case Study",
-    description:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint...",
-    index: 1,
-    total: 6,
-  },
-  {
-    title: "E-commerce Platform",
-    description:
-      "Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud...",
-    index: 2,
-    total: 6,
-  },
-  {
-    title: "Social Media App",
-    description: "Non deserunt ullamco est sit aliqua dolor do amet sint...",
-    index: 3,
-    total: 6,
-  },
-  // Add more projects as needed
-];
-
-const fadeInVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-export default function Testing() {
-  const [currentProject, setCurrentProject] = useState(0);
-
-  // Function to go to the previous project
-  const handlePrevious = () => {
-    setCurrentProject((prev) => (prev === 0 ? projects.length - 1 : prev - 1));
-  };
-
-  // Function to go to the next project
-  const handleNext = () => {
-    setCurrentProject((prev) => (prev === projects.length - 1 ? 0 : prev + 1));
-  };
-
+export default function Component() {
   return (
-    <>
-      {/* Desktop View */}
-      <div
-        id="myproject"
-        className="hidden lg:grid grid-cols-5 grid-rows-6 h-screen bg-yellow-400 text-black"
-      >
-        <div className="row-span-2 col-span-2 bg-black">
-          <StripedBackground width="100%" height="100%" />
-        </div>
-        <div className="row-span-2 col-span-2"></div>
-        <div className="row-span-3 col-span-1 bg-black">
-          <StripedBackground width="100%" height="100%" />
-        </div>
-        <div className="col-span-4 row-span-4 p-4 flex flex-col justify-between border-2 border-black">
-          <div>
-            <h4 className="text-xl font-semibold">My Projects</h4>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={projects[currentProject].index}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={fadeInVariants}
-              >
-                <h1 className="text-4xl font-bold mt-2">
-                  {projects[currentProject].index}/
-                  {projects[currentProject].total}
-                </h1>
-                <h2 className="text-2xl font-bold mt-4">
-                  {projects[currentProject].title}
-                </h2>
-                <p className="mt-4">{projects[currentProject].description}</p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-4 px-4 py-2 border border-black flex items-center gap-2"
-          >
-            Take A Look <span>→</span>
-          </motion.button>
-        </div>
-
-        <div className="row-span-4 flex justify-between items-center px-4">
-          <motion.button
-            onClick={handlePrevious}
-            whileHover={{ scale: 1.1 }}
-            className="w-40 h-12 flex items-center justify-center border border-black hover:bg-gray-200"
-          >
-            <FaChevronLeft className="text-xl text-black" />
-          </motion.button>
-          <motion.button
-            onClick={handleNext}
-            whileHover={{ scale: 1.1 }}
-            className="w-40 h-12 flex items-center justify-center border border-black hover:bg-gray-200"
-          >
-            <FaChevronRight className="text-xl text-black" />
-          </motion.button>
-        </div>
+    <div className="flex-1 flex" id="myproject">
+      <div className="w-16 border border-white border-l-0 text-white flex items-center justify-center">
+        <span className="transform -rotate-90 text-xl font-semibold">Home</span>
       </div>
-
-      {/* Mobile View */}
-      <div className="lg:hidden grid grid-cols-2 grid-rows-6 h-screen bg-yellow-400 text-black">
-        <div className="row-span-1">
-          <StripedBackground width="100%" height="100%" />
-        </div>
-        <div className="row-span-1"></div>
-        <div className="col-span-2 row-span-4 p-4 flex flex-col justify-between border-2 border-black">
-          <div>
-            <h4 className="text-xl font-semibold">My Projects</h4>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={projects[currentProject].index}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={fadeInVariants}
+      <section className="w-full bg-[#1e1e1e] text-white py-16 border border-white border-l-0 border-r-0">
+        <div className="container mx-auto px-4">
+          <h2 className="text-yellow-400 text-2xl font-bold mb-4">
+            My Projects
+          </h2>
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="md:w-1/2 mb-8 md:mb-0">
+              <p className="text-yellow-400 text-6xl font-bold mb-4">1/6</p>
+              <h3 className="text-yellow-400 text-4xl font-bold mb-4">
+                Redesign Case Study
+              </h3>
+              <p className="mb-6 text-gray-300">
+                Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+                amet sint. Velit officia consequat duis enim velit mollit.
+                Exercitation veniam consequat sunt nostrud amet.
+              </p>
+              <Link
+                href="#"
+                className="inline-block bg-transparent border-2 border-yellow-400 text-yellow-400 px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 hover:text-[#1e1e1e] transition-colors duration-300"
               >
-                <h1 className="text-4xl font-bold mt-2">
-                  {projects[currentProject].index}/
-                  {projects[currentProject].total}
-                </h1>
-                <h2 className="text-2xl font-bold mt-4">
-                  {projects[currentProject].title}
-                </h2>
-                <p className="mt-4">{projects[currentProject].description}</p>
-              </motion.div>
-            </AnimatePresence>
+                Take A Look
+                <span className="ml-2">→</span>
+              </Link>
+            </div>
+            <div className="md:w-1/2">
+              <div className="bg-yellow-400">
+                <Image
+                  src="/placeholder.svg"
+                  alt="White game controller"
+                  width={500}
+                  height={500}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-4 px-4 py-2 border border-black flex items-center gap-2"
-          >
-            Take A Look <span>→</span>
-          </motion.button>
         </div>
-
-        <div className="row-span-1 col-span-2 flex items-center">
-          <motion.button
-            onClick={handlePrevious}
-            whileHover={{ scale: 1.1 }}
-            className="w-40 h-12 flex items-center justify-center border border-black hover:bg-gray-200"
-          >
-            <FaChevronLeft className="text-xl text-black" />
-          </motion.button>
-          <motion.button
-            onClick={handleNext}
-            whileHover={{ scale: 1.1 }}
-            className="w-40 h-12 flex items-center justify-center border border-black hover:bg-gray-200"
-          >
-            <FaChevronRight className="text-xl text-black" />
-          </motion.button>
-        </div>
-        <div className="row-span-1"></div>
-        <div className="row-span-1 sm:hidden">
-          <StripedBackground width="100%" height="100%" />
-        </div>
+      </section>
+      <div className="w-16 border border-white border-r-0 text-white flex items-center justify-center">
+        <span className="transform -rotate-90 text-xl font-semibold">Home</span>
       </div>
-    </>
+    </div>
   );
 }

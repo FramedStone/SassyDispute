@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui";
 
 export default function Services() {
   return (
-    <section id="services" className="border border-black p-9 text-black">
+    <section id="services" className="border border-black p-9 text-white">
       <div className="text-left font-bold">Services</div>
       <div className="flex justify-center items-center space-x-10">
         <div className="flex flex-col items-center justify-center space-y-3">

@@ -1,13 +1,14 @@
 "use client";
 
 import ContactUs from "@/components/pages/ContactUs";
-// import Pricing from "@/components/pages/Pricing";
 import Projects from "@/components/pages/Projects";
 import Services from "@/components/pages/Services";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import Header from "@/components/pages/Header";
+import TopHeader from "@/components/pages/TopHeader";
+import Title from "@/components/pages/Title";
+import TitleScrolling from "@/components/pages/TitleScrolling";
 
 // Define a reusable animation variant
 const revealVariants = {
@@ -51,14 +52,17 @@ export default function Home() {
   ]);
 
   return (
-    <div className="bg-yellow-400 min-h-screen m-10">
+    <div className="bg-primary min-h-screen">
+      <TopHeader />
       <motion.div
         ref={headerRef}
         initial="hidden"
         animate={headerControls}
         variants={revealVariants}
       >
-        <Header />
+        {/* <Header /> */}
+        <Title />
+        <TitleScrolling />
       </motion.div>
 
       <motion.div
