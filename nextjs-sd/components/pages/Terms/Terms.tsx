@@ -13,7 +13,7 @@ export default function TermsAndConditions() {
   const handleProceed = () => {
     if (isChecked) {
       // Proceed to the next page
-      router.push("/next-page"); // Replace with your actual next page route
+      router.push("/Bridge"); // Replace with your actual next page route
     } else {
       alert("Please accept the terms and conditions to proceed.");
     }
