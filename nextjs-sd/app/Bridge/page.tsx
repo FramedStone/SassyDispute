@@ -17,8 +17,10 @@ import {
   DialogFooter,
 } from "../components/ui";
 
-require("dotenv").config();
-const { ethers } = require("ethers");
+import dotenv from "dotenv";
+import { ethers } from "ethers";
+
+dotenv.config();
 const alchemyUrl = process.env.ALCHEMY_API_URL;
 const provider = new ethers.JsonRpcProvider(alchemyUrl);
 
