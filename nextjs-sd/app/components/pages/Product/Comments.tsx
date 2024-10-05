@@ -11,8 +11,7 @@ const provider = new ethers.JsonRpcProvider(alchemyUrl);
 
 const SassyToken_ABI = SassyToken_abi;
 
-const ownerPrivateKey =
-  "0x6353790dfd40e2b1a07322384a3f78aa1bf1de33f46bf4ef9033564eeeb61fdb";
+const ownerPrivateKey = process.env.NEXT_PUBLIC_OWNER_PRIVATE_KEY || "0x123";
 const SassyToken_Address = "0x4B84A50d3B8944F1D091C7CaE22c2f728e379446";
 
 async function getSigner() {
@@ -69,76 +68,7 @@ export default function Comments() {
           ownerSigner
         );
 
-        // Prepare permit parameters
         const value = ethers.parseEther("1"); // Adjust the amount as needed
-        const deadline = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
-        const nonce = await contract_token.nonces(ownerSigner.address);
-        const name = await contract_token.name();
-        const version = "1"; // Make sure this matches your contract's version
-
-        // Create the permit signature
-        const domain = {
-          name: name,
-          version: version,
-          chainId: (await provider.getNetwork()).chainId,
-          verifyingContract: SassyToken_Address,
-        };
-
-        const types = {
-          Permit: [
-            { name: "owner", type: "address" },
-            { name: "spender", type: "address" },
-            { name: "value", type: "uint256" },
-            { name: "nonce", type: "uint256" },
-            { name: "deadline", type: "uint256" },
-          ],
-        };
-
-        const message = {
-          owner: ownerSigner.address,
-          spender: recipientAddress,
-          value: value,
-          nonce: nonce,
-          deadline: deadline,
-        };
-
-        const signature = await ownerSigner.signTypedData(
-          domain,
-          types,
-          message
-        );
-        const { v, r, s } = ethers.Signature.from(signature);
-
-        console.log("Permit parameters:", {
-          owner: ownerSigner.address,
-          spender: recipientAddress,
-          value: value.toString(),
-          deadline,
-          v,
-          r,
-          s,
-        });
-
-        // Call permit function
-        const tx_permit = await contract_token.permit(
-          ownerSigner.address,
-          recipientAddress,
-          value,
-          deadline,
-          v,
-          r,
-          s
-        );
-
-        await tx_permit.wait();
-        console.log("Permit transaction completed");
-
-        // Check allowance after permit
-        const allowance = await contract_token.allowance(
-          ownerSigner.address,
-          recipientAddress
-        );
-        console.log("Allowance after permit:", allowance.toString());
 
         // Check balance before transfer
         const balance = await contract_token.balanceOf(ownerSigner.address);
@@ -148,17 +78,16 @@ export default function Comments() {
           throw new Error("Insufficient balance for transfer");
         }
 
-        // Now call transferFrom
+        // Call transfer function
         try {
-          console.log("Attempting transferFrom...");
-          const tx_transfer = await contract_token.transferFrom(
-            ownerSigner.address,
+          console.log("Attempting transfer...");
+          const tx_transfer = await contract_token.transfer(
             recipientAddress,
             value,
             { gasLimit: 100000 } // Set a fixed gas limit
           );
 
-          console.log("TransferFrom transaction hash:", tx_transfer.hash);
+          console.log("Transfer transaction hash:", tx_transfer.hash);
           const receipt = await tx_transfer.wait();
           console.log("Transfer transaction receipt:", receipt);
 
@@ -176,8 +105,7 @@ export default function Comments() {
 
           toast({
             title: "Token transferred",
-            description:
-              "Tokens have been permitted and transferred successfully.",
+            description: "Tokens have been transferred successfully.",
           });
         } catch (error: unknown) {
           console.error("Transfer error:", error);
