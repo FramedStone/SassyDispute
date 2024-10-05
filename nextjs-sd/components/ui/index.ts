@@ -18,6 +18,7 @@ export * from "./Menubar";
 export * from "./Navigation-menu";
 export * from "./Pagination";
 export * from "./Select";
+export * from "./Switch";
 export * from "./Separator";
 export * from "./Sheet";
 export * from "./Skeleton";
