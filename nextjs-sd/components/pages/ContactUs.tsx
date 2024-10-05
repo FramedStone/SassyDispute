@@ -15,7 +15,7 @@ export default function ContactUs() {
   return (
     <motion.section
       id="contact"
-      className="border border-black p-9 text-black flex flex-col md:flex-row gap-8"
+      className="border border-white border-l-0 border-r-0 p-9 text-white flex flex-col md:flex-row gap-8"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
