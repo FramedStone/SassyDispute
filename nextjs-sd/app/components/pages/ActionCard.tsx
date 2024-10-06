@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui";
+import { useRouter } from "next/navigation";
 
 export default function ActionCard() {
   // Animation variants for cards
@@ -14,6 +15,7 @@ export default function ActionCard() {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
+  const router = useRouter();
 
   return (
     <div className="flex-1 flex font-karla" id="actions">
@@ -48,7 +50,12 @@ export default function ActionCard() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-yellow-400 text-black font-bold py-3 text-lg hover:bg-yellow-400 hover:opacity-80">
+                <Button
+                  className="w-full bg-yellow-400 text-black font-bold py-3 text-lg hover:bg-yellow-400 hover:opacity-80"
+                  onClick={() => {
+                    router.push("/Cases");
+                  }}
+                >
                   Comment Now!
                 </Button>
               </CardFooter>
@@ -76,7 +83,12 @@ export default function ActionCard() {
                 </p>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-yellow-400 text-black font-bold py-3 text-lg hover:bg-yellow-400 hover:opacity-80">
+                <Button
+                  className="w-full bg-yellow-400 text-black font-bold py-3 text-lg hover:bg-yellow-400 hover:opacity-80"
+                  onClick={() => {
+                    router.push("/Terms");
+                  }}
+                >
                   Bridge Now!
                 </Button>
               </CardFooter>

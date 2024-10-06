@@ -48,7 +48,7 @@ export default function Title() {
 
           {/* Button */}
           <Link
-            href="/look"
+            href="/Cases"
             className="inline-flex items-center justify-between bg-yellow-300 text-gray-900 px-6 py-3 rounded-full font-semibold mt-4 max-w-48 hover:bg-yellow-400 transition-colors"
           >
             <span>Take A Look</span>
