@@ -24,7 +24,7 @@ interface IPartnerContract {
     function getDisputeCases() external view returns(string[] memory _ipfsHashes);
 }
 
-contract SassyBridge is AccessControl {
+contract SassyBridgeV2 is AccessControl {
     /*
         SassyBridge roles setup
     */
@@ -55,6 +55,29 @@ contract SassyBridge is AccessControl {
         owner = _owner;
         _setRoleAdmin(DEFAULT_ADMIN_ROLE, ADMIN);
         _grantRole(ADMIN, owner);
+    }
+
+    // function to start bridging (Web2)
+    function setBridge(
+        address _payer, 
+        address _payee, 
+        uint256 _disputeCasesAgreed, 
+        string[] memory _disputeCases,
+        address _SassyToken, 
+        uint256 _fundsAgreed, 
+        uint256 _holdDuration
+    ) external onlyRole(PARTNER) {
+        require(_disputeCases.length == _disputeCasesAgreed, "Dispute cases doesn't match dispute cases agreed");
+
+        // Calculate SassyTokens to deposit based on the number of dispute cases
+        _fundsAgreed = calculateRequiredTokens(_disputeCasesAgreed);
+
+        // Create SassyEscrow
+        SassyEscrow _SassyEscrow = new SassyEscrow(_payer, _payee, _disputeCasesAgreed, _SassyToken, _fundsAgreed, _holdDuration);
+        emit SassyEscrowCreated(address(_SassyEscrow), address(this));
+
+        // Deposit Dispute Cases into SassyEscrow
+        _SassyEscrow.depositDisputeCases(_disputeCases);
     }
     
     // function to start bridging (ROLES = "Partner")
