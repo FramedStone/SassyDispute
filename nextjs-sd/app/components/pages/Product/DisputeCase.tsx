@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, Filter, ArrowRight } from "lucide-react";
+import {
+  Search,
+  Filter,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react"; // Added icons for toggle
 import { useRouter } from "next/navigation";
 import TopHeader from "../TopHeader";
 import { Switch } from "@radix-ui/react-switch";
@@ -49,6 +55,7 @@ export default function Component() {
     "latest"
   );
   const [showArchived, setShowArchived] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to control sidebar visibility
 
   useEffect(() => {
     setDisputeCases(importedDisputeCases);
@@ -82,45 +89,77 @@ export default function Component() {
       <TopHeader />
 
       <div className="flex h-screen bg-primary border border-white border-l-0 border-r-0 text-white">
-        <aside className="w-64 p-6 border-r border-white">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            <Filter className="mr-2" />
-            Filter
-          </h2>
-          <div className="mb-6">
-            <h3 className="text-sm font-medium mb-2">Sort By</h3>
-            <div className="space-x-2">
+        {/* Sidebar */}
+        {isSidebarOpen && (
+          <aside className="w-64 p-6 border-r border-white">
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <Filter className="mr-2" />
+              Filter
+              {/* Toggle Button for Filter Sidebar */}
               <Button
-                variant={sortBy === "latest" ? "secondary" : "ghost"}
+                variant="ghost"
                 size="sm"
-                onClick={() => setSortBy("latest")}
+                onClick={() => setIsSidebarOpen(false)} // Close sidebar
+                className="ml-2 p-1 rounded-full"
               >
-                Latest
+                <ChevronLeft className="w-5 h-5" />
               </Button>
-              <Button
-                variant={sortBy === "title" ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setSortBy("title")}
-              >
-                Title
-              </Button>
-              <Button
-                variant={sortBy === "creator" ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setSortBy("creator")}
-              >
-                Creator
-              </Button>
+            </h2>
+            <div className="mb-6">
+              <h3 className="text-sm font-medium mb-2">Sort By</h3>
+              <div className="space-x-2">
+                <Button
+                  variant={sortBy === "latest" ? "secondary" : "ghost"}
+                  size="sm"
+                  onClick={() => setSortBy("latest")}
+                >
+                  Latest
+                </Button>
+                <Button
+                  variant={sortBy === "title" ? "secondary" : "ghost"}
+                  size="sm"
+                  onClick={() => setSortBy("title")}
+                >
+                  Title
+                </Button>
+                <Button
+                  variant={sortBy === "creator" ? "secondary" : "ghost"}
+                  size="sm"
+                  onClick={() => setSortBy("creator")}
+                >
+                  Creator
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Show Archived</span>
-            <Switch checked={showArchived} onCheckedChange={setShowArchived} />
-          </div>
-        </aside>
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="mb-6">
-            <div className="relative">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Show Archived</span>
+              <Switch
+                checked={showArchived}
+                onCheckedChange={setShowArchived}
+              />
+            </div>
+          </aside>
+        )}
+
+        {/* Main Content */}
+        <main
+          className={`flex-1 p-6 overflow-auto ${
+            isSidebarOpen ? "ml-0" : "ml-0"
+          }`}
+        >
+          <div className="flex items-center">
+            {/* Toggle Button to Open Sidebar */}
+            {!isSidebarOpen && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsSidebarOpen(true)} // Open sidebar
+                className="mr-2 p-1 rounded-full"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </Button>
+            )}
+            <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
               <Input
                 className="pl-10 text-white"
@@ -130,7 +169,8 @@ export default function Component() {
               />
             </div>
           </div>
-          <div className="space-y-4">
+
+          <div className="space-y-4 mt-4">
             {sortedCases.map((disputeCase) => (
               <Card key={disputeCase.id} className="hover:scale-95">
                 <CardHeader>
