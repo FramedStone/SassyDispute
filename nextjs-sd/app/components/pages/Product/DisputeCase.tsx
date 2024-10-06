@@ -45,7 +45,9 @@ export default function Component() {
 
   const [disputeCases, setDisputeCases] = useState<DisputeCase[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState<"latest" | "trending">("latest");
+  const [sortBy, setSortBy] = useState<"latest" | "title" | "creator">(
+    "latest"
+  );
   const [showArchived, setShowArchived] = useState(false);
 
   useEffect(() => {
@@ -57,7 +59,8 @@ export default function Component() {
       (disputeCase.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         disputeCase.description
           .toLowerCase()
-          .includes(searchTerm.toLowerCase())) &&
+          .includes(searchTerm.toLowerCase()) ||
+        disputeCase.creator.toLowerCase().includes(searchTerm.toLowerCase())) &&
       (showArchived || !disputeCase.is_archived)
   );
 
@@ -66,9 +69,12 @@ export default function Component() {
       return (
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       );
-    } else {
-      return b.comments.length - a.comments.length;
+    } else if (sortBy === "title") {
+      return a.title.localeCompare(b.title);
+    } else if (sortBy === "creator") {
+      return a.creator.localeCompare(b.creator);
     }
+    return 0;
   });
 
   return (
@@ -92,11 +98,18 @@ export default function Component() {
                 Latest
               </Button>
               <Button
-                variant={sortBy === "trending" ? "secondary" : "ghost"}
+                variant={sortBy === "title" ? "secondary" : "ghost"}
                 size="sm"
-                onClick={() => setSortBy("trending")}
+                onClick={() => setSortBy("title")}
               >
-                Trending
+                Title
+              </Button>
+              <Button
+                variant={sortBy === "creator" ? "secondary" : "ghost"}
+                size="sm"
+                onClick={() => setSortBy("creator")}
+              >
+                Creator
               </Button>
             </div>
           </div>
@@ -119,7 +132,7 @@ export default function Component() {
           </div>
           <div className="space-y-4">
             {sortedCases.map((disputeCase) => (
-              <Card key={disputeCase.id}>
+              <Card key={disputeCase.id} className="hover:scale-95">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <CardTitle>{disputeCase.title}</CardTitle>
