@@ -33,13 +33,16 @@ export default function TermsAndConditions() {
                 json schema shown below. This is to standardize the data that we
                 receive from all our providers regarding to the disputate cases.
               </p>
-              <Image
-                src="/bridge_schema.png"
-                alt="JSON Schema"
-                width={600}
-                height={200}
-                className="bg-zinc-700 w-full h-40 object-cover"
-              />
+              <div className="relative w-full h-auto">
+                <Image
+                  src="/bridge_schema.png"
+                  alt="JSON Schema"
+                  layout="responsive"
+                  width={1200} // Set larger width
+                  height={800} // Set larger height to ensure full size
+                  className="bg-zinc-700 object-contain"
+                />
+              </div>
             </li>
 
             <li>
