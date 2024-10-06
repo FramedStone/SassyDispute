@@ -34,7 +34,7 @@ export default function TermsAndConditions() {
                 receive from all our providers regarding to the disputate cases.
               </p>
               <Image
-                src="/placeholder.svg"
+                src="/bridge_schema.png"
                 alt="JSON Schema"
                 width={600}
                 height={200}

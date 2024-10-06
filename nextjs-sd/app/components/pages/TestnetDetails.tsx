@@ -13,13 +13,13 @@ export default function TestnetDetails() {
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <Image
             src="/scroll.png"
-            alt="Manta Network Logo"
+            alt="Scroll Network Logo"
             width={200}
             height={200}
             className="mb-4 mr-4"
           />
           <h1 className="text-4xl font-bold text-center md:text-right">
-            Powered by Manta Network
+            Powered by Scroll Network
           </h1>
         </div>
 
@@ -28,7 +28,7 @@ export default function TestnetDetails() {
         </h2>
 
         <p className="mb-4">
-          web3resell leverages Manta Network's cutting-edge technology to
+          web3resell leverages Scroll Network's cutting-edge technology to
           provide:
         </p>
 
@@ -40,8 +40,8 @@ export default function TestnetDetails() {
         </ul>
 
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-          <Button variant="ghost">Manta Pacific Testnet</Button>
-          <Button variant="ghost">Manta Atlantic Mainnet</Button>
+          <Button variant="ghost">Scroll Sepolia Testnet</Button>
+          <Button variant="ghost">Scroll Mainnet</Button>
         </div>
       </div>
     </div>
