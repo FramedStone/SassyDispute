@@ -19,6 +19,8 @@ import {
 
 import * as dotenv from "dotenv";
 import { ethers } from "ethers";
+import TopHeader from "../components/pages/TopHeader";
+import { useRouter } from "next/navigation";
 
 dotenv.config();
 const alchemyUrl = process.env.NEXT_PUBLIC_ALCHEMY_API_URL;
@@ -105,6 +107,7 @@ async function startBridge(_disputeCasesAgreed: number, _holdDuration: number) {
 }
 
 export default function ValueSubmission() {
+  const router = useRouter();
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -129,58 +132,64 @@ export default function ValueSubmission() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-white p-8">
-      <div className="max-w-md mx-auto">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="value">Enter Value</Label>
-            <Input
-              id="value"
-              type="number"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="Enter a number greater than 0"
-              className="bg-zinc-800 border-zinc-700 text-white"
-            />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-          </div>
-          <Button
-            type="submit"
-            className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
-          >
-            Submit
-          </Button>
-        </form>
-
-        <Dialog open={showPopup} onOpenChange={setShowPopup}>
-          <DialogContent className="bg-zinc-800 text-white">
-            <DialogHeader>
-              <DialogTitle>Smart Contract Address</DialogTitle>
-            </DialogHeader>
-            <div className="py-4">
-              <p className="text-sm text-zinc-400 mb-2">
-                The smart contract address is:
-              </p>
-              <a
-                href={`https://sepolia.scrollscan.com/address/${contractAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono bg-zinc-700 p-3 rounded-md break-all inline-block hover:bg-zinc-600 transition-colors"
-              >
-                {contractAddress}
-              </a>
+    <>
+      <TopHeader />
+      <div className="min-h-screen bg-zinc-900 text-white p-8">
+        <div className="max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="value">Enter Value</Label>
+              <Input
+                id="value"
+                type="number"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                placeholder="Enter a number greater than 0"
+                className="bg-zinc-800 border-zinc-700 text-white"
+              />
+              {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
-            <DialogFooter>
-              <Button
-                onClick={() => setShowPopup(false)}
-                className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
-              >
-                Close
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            <Button
+              type="submit"
+              className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
+            >
+              Submit
+            </Button>
+          </form>
+
+          <Dialog open={showPopup} onOpenChange={setShowPopup}>
+            <DialogContent className="bg-zinc-800 text-white">
+              <DialogHeader>
+                <DialogTitle>Smart Contract Address</DialogTitle>
+              </DialogHeader>
+              <div className="py-4">
+                <p className="text-sm text-zinc-400 mb-2">
+                  The smart contract address is:
+                </p>
+                <a
+                  href={`https://sepolia.scrollscan.com/address/${contractAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono bg-zinc-700 p-3 rounded-md break-all inline-block hover:bg-zinc-600 transition-colors"
+                >
+                  {contractAddress}
+                </a>
+              </div>
+              <DialogFooter>
+                <Button
+                  onClick={() => {
+                    setShowPopup(false);
+                    router.push("/Cases");
+                  }}
+                  className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
+                >
+                  Close
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
